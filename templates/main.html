@@ -25,7 +25,7 @@
             width: 100%;
             height: 250px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://user-images.githubusercontent.com/99665886/178204513-e9a428d7-09a4-4118-831b-827d8576c962.png');
             background-position: center;
             background-size: cover;
 
@@ -53,18 +53,22 @@
         .mytitle > button:hover {
             border: 2px solid white;
         }
+        .myaverage {
+            width: 100%;
+            height: 40px;
+            background-color: darkseagreen;
+            background-position: center;
+            background-size: cover;
 
-        .mycomment {
-            color: gray;
+            color: black;
+            font-weight: bold;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-
-        .mycards {
-            margin: 20px auto 0px auto;
-            width: 95%;
-            max-width: 1200px;
-        }
-
-        .mypost {
+        .scorelist {
             width: 95%;
             max-width: 500px;
             margin: 20px auto 0px auto;
@@ -92,15 +96,15 @@
         });
 
         function listing() {
-
+            $('#score-box').empty()
             $.ajax({
                 type: 'GET',
                 url: '/golf',
                 data: {},
                 success: function (response) {
-                    let rows = response['golfking']
+                    let rows = response['golf_scores']
                     for(let i = 0; i < rows.length; i++) {
-                        let name = rows[i]['name'] 
+                        let accessid = rows[i]['accessid']
                         // TODO: 나중에는 로그인 페이지에서 고유값을 받아올것
                         let date = rows[i]['date']
                         let field = rows[i]['field']
@@ -108,10 +112,10 @@
                         // let grade = rows[i]['grade'] #TODO: score - 72 결과에 따라 그레이드 적용
 
                         let temp_html = `<tr>
-                                            <td>${name}</td>
+                                            <td>${accessid}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
-                                            <td>${score}타 (${score-72})</td>
+                                            <td>${score}타</td>
                                             <td>싱글</td>
                                         </tr>
                         `
@@ -153,7 +157,10 @@
     <h1>내일은 나도 골프왕!</h1>
     <button onclick="open_box()">기록하기</button>
 </div>
-<div class="mypost" id="post-box">
+<div class="myaverage">
+    <text> <span id="username">xxx</span> 님의 평균 타수: <span id="average">00</span>타</text>
+</div>
+<div class="scorelist" id="post-box">
     <div class="form-floating mb-3">
         <input id="accessid" type="email" class="form-control" placeholder="name@example.com">
         <label>아이디</label>
@@ -163,8 +170,12 @@
         <label>날짜</label>
     </div>
     <div class="form-floating mb-3">
-        <input id="date" type="field" class="form-control" placeholder="해비치 - 남양주 CC">
+        <input id="field" type="text" class="form-control" placeholder="해비치 - 남양주 CC">
         <label>장소</label>
+    </div>
+        <div class="form-floating mb-3">
+        <input id="score" type="text" class="form-control" placeholder="80">
+        <label>타수</label>
     </div>
 
     <div class="mybtns">
@@ -175,7 +186,7 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">이름</th>
+        <th scope="col">아이디</th>
         <th scope="col">날짜</th>
         <th scope="col">장소</th>
         <th scope="col">기록</th>
@@ -185,13 +196,6 @@
       </tr>
     </thead>
     <tbody id="score-box">
-      <tr>
-        <td>jaehee.ryu@icloud.com</td>
-        <td>2022-07-11</td>
-        <td>해비치 - 남양주 CC</td>
-        <td>80(+8)</td>
-        <td>싱글</td>
-      </tr>
     </tbody>
   </table>
 
