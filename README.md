@@ -8,9 +8,9 @@
 ![diagram-export-2022  7  11  오전 11_24_57](https://user-images.githubusercontent.com/65847457/178177227-504f73b9-2388-4e26-bda1-3814314465a8.png)
 
 ### 기능
-로그인 페이지 
-회원가입 페이지 
-메인페이지 
+로그인 페이지 <br>
+회원가입 페이지 <br>
+메인페이지 <br>
 
 ### 동작
 <ul>
