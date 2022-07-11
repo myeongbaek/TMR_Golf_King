@@ -5,7 +5,8 @@
 
 한 달동안의 평균타수도 계산하여 보여줍니다
 
-![diagram-export-2022  7  11  오전 11_24_57](https://user-images.githubusercontent.com/65847457/178177227-504f73b9-2388-4e26-bda1-3814314465a8.png)
+![diagram-export-2022  7  11  오전 11_49_45](https://user-images.githubusercontent.com/65847457/178179740-6c33f895-157f-4160-97b4-dadbf43c8ae6.png)
+
 
 ### 기능
 로그인 페이지 <br>
