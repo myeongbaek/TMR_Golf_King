@@ -132,6 +132,7 @@
             let field = $('#field').val()
             let score_mix = $('#score').val()
             let score = score_mix.replace(/\D/g, "")
+            {# 적용이 안돼요..#}
 
             $.ajax({
                 type: 'POST',
@@ -178,6 +179,7 @@
         <input id="score" type="number" class="form-control" placeholder="80">
 {#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
 {#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
+{#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
         <label>타수</label>
     </div>
 
