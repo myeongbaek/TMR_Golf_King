@@ -99,10 +99,9 @@ def check_dupnick():
     exists = bool(db.users.find_one({"nickname": nickname_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-@app.route("/main", methods=['GET'])
-def main():
-    myname = "sparta"
-    return render_template("main.html", name=myname)
+@app.route("/main/<username>", methods=['GET'])
+def main(username):
+    return render_template("main.html", username=username)
 
 @app.route("/golf", methods=["POST"])
 def movie_post():
