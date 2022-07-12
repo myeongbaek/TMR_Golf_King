@@ -106,7 +106,7 @@ def check_dupnick():
 def main(username):
     user_info = db.users.find_one({"username": username}, {"_id": False})
     # username find_one nickname 받은 후 assign
-    score_list = list(db.golf_scores.find({"accessid": username}, {'_id': False})) # 나중에 accessid = username 통일
+    score_list = list(db.golf_scores.find({"username": username}, {'_id': False}))
     if len(score_list) != 0:
         total_score, count = 0, 0
         for record in score_list:
@@ -118,14 +118,14 @@ def main(username):
     return render_template("main.html", user_info=user_info, average_score=int(average_score))
 
 @app.route("/golf", methods=["POST"])
-def movie_post():
-    accessid_receive = request.form['accessid_give']
+def score_post():
+    username_receive = request.form['username_give']
     date_receive = request.form['date_give']
     field_receive = request.form['field_give']
     score_receive = request.form['score_give']
 
     doc = {
-        'accessid': accessid_receive,
+        'username': username_receive,
         'date': date_receive,
         'field': field_receive,
         'score': score_receive
@@ -136,7 +136,7 @@ def movie_post():
     return jsonify({'msg': '등록 완료!'})
 
 @app.route("/golf", methods=["GET"])
-def movie_get():
+def score_get():
     score_list = list(db.golf_scores.find({}, {'_id': False}))
     return jsonify({'golf_scores': score_list})
 

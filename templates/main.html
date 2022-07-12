@@ -104,7 +104,7 @@
                 success: function (response) {
                     let rows = response['golf_scores']
                     for(let i = 0; i < rows.length; i++) {
-                        let accessid = rows[i]['accessid']
+                        let username = rows[i]['username']
                         // TODO: 나중에는 로그인 페이지에서 고유값을 받아올것
                         let date = rows[i]['date']
                         let field = rows[i]['field']
@@ -112,7 +112,7 @@
                         // let grade = rows[i]['grade'] #TODO: score - 72 결과에 따라 그레이드 적용
 
                         let temp_html = `<tr>
-                                            <td>${accessid}</td>
+                                            <td>${username}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
                                             <td>${score}타</td>
@@ -127,7 +127,7 @@
         }
 
         function posting() {
-            let accessid = $('#accessid').val()
+            let username = $('#username').val()
             let date = $('#date').val()
             let field = $('#field').val()
             let score = $('#score').val()
@@ -135,7 +135,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/golf',
-                data: {accessid_give: accessid, date_give: date, field_give: field, score_give: score},
+                data: {username_give: username, date_give: date, field_give: field, score_give: score},
                 success: function (response) {
                     alert(response['msg'])
                     window.location.reload()
@@ -162,7 +162,7 @@
 </div>
 <div class="scorelist" id="post-box">
     <div class="form-floating mb-3">
-        <input id="accessid" type="email" class="form-control" placeholder="name@example.com">
+        <input id="username" type="text" class="form-control" placeholder="username">
         <label>아이디</label>
     </div>
     <div class="form-floating mb-3">
