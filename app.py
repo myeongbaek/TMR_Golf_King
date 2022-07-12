@@ -120,7 +120,7 @@ def movie_post():
 
     db.golf_scores.insert_one(doc)
 
-    return jsonify({'msg': 'POST 연결 완료!'})
+    return jsonify({'msg': '등록 완료!'})
 
 @app.route("/golf", methods=["GET"])
 def movie_get():
