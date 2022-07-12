@@ -65,8 +65,10 @@ def sign_in():
          'id': username_receive,
          'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-        # attributeerror: 'str' object has no attribute 'decode' 오류 뜰 경우 .decode(UTF-8) 지움
+        try:
+            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        except AttributeError:
+            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
@@ -102,6 +104,7 @@ def check_dupnick():
 
 @app.route("/main/<username>", methods=['GET'])
 def main(username):
+    # username find_one nickname 받은 후 assign
     return render_template("main.html", username=username)
 
 @app.route("/golf", methods=["POST"])
