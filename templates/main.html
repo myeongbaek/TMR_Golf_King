@@ -130,7 +130,8 @@
             let username = $('#username').val()
             let date = $('#date').val()
             let field = $('#field').val()
-            let score = $('#score').val()
+            let score_mix = $('#score').val()
+            let score = score_mix.replace(/\D/g, "")
 
             $.ajax({
                 type: 'POST',
@@ -158,7 +159,7 @@
     <button onclick="open_box()">기록하기</button>
 </div>
 <div class="myaverage">
-    <text> <span id="username">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타</text>
+    <text> <span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타</text>
 </div>
 <div class="scorelist" id="post-box">
     <div class="form-floating mb-3">
@@ -175,8 +176,8 @@
     </div>
         <div class="form-floating mb-3">
         <input id="score" type="number" class="form-control" placeholder="80">
-{#      <input id="score" type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="80"/>
-        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
+{#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
+{#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
         <label>타수</label>
     </div>
 
