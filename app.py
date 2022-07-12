@@ -101,7 +101,8 @@ def check_dupnick():
 
 @app.route("/main", methods=['GET'])
 def main():
-    redirect(url_for("main")) # main으로 가는 펑션
+    myname = "sparta"
+    return render_template("main.html", name=myname)
 
 @app.route("/golf", methods=["POST"])
 def movie_post():
