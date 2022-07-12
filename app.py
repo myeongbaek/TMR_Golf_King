@@ -104,8 +104,18 @@ def check_dupnick():
 
 @app.route("/main/<username>", methods=['GET'])
 def main(username):
+    user_info = db.users.find_one({"username": username}, {"_id": False})
     # username find_one nickname 받은 후 assign
-    return render_template("main.html", username=username)
+    score_list = list(db.golf_scores.find({"accessid": username}, {'_id': False})) # 나중에 accessid = username 통일
+    if len(score_list) != 0:
+        total_score, count = 0, 0
+        for record in score_list:
+            total_score += int(record['score'])
+            count += 1
+        average_score = total_score / count
+    else:
+        average_score = 0
+    return render_template("main.html", user_info=user_info, average_score=int(average_score))
 
 @app.route("/golf", methods=["POST"])
 def movie_post():
