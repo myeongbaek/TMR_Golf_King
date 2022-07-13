@@ -166,5 +166,9 @@ def save_img():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/mypage_in', methods=['GET'])
+def mypage_in():
+    return jsonify({"result": "success"})
+
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

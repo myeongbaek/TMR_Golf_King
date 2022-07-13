@@ -151,17 +151,16 @@
         function close_box(){
             $('#post-box').hide()
         }
-        function mypage_in() {
 
+        function mypage_in() {
             $.ajax({
-                type: "POST",
-                url: "/app/mypage_in",
+                type: "GET",
+                url: "/mypage_in",
 
                 success: function (response) {
-                    console.log("success")
-                    window.location.replace("/user")
-                    {#메인으로 가는 클라이언트 명령어#}
-
+                    if (response['result'] == 'success') {
+                        window.location.href = "/user/" + username
+                    }
                 }
             });
         }
@@ -174,7 +173,7 @@
     <article class="top_bar">
         <section>
             <menu id="headerMenu">
-                    <button onclick="mypage_in()">마이페이지</button>
+                <button onclick="mypage_in()">마이페이지</button>
             </menu>
         </section>
     </article>

@@ -3,7 +3,7 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>{{ user_info.name }} | TMR_GFK</title>
+    <title>{{ user_info.name }} | SWEETER</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,15 +13,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Gamja+Flower&family=Stylish&display=swap"
-          rel="stylesheet">
-
+    <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="{{ url_for('static', filename='myjs.js')}}"></script>
+    <script src="{{ url_for('static', filename='myjs.js') }}"></script>
 
 
     <script>
@@ -30,6 +26,7 @@
             alert('로그아웃!')
             window.location.href = "/login"
         }
+
         function update_profile() {
             let nickname = $('#input-nickname').val()
             let password = $('#input-password').val()
@@ -96,7 +93,7 @@
 
             </div>
         </article>
-        {%  if status %}
+        {% if status %}
             <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
                 <a class="button level-item has-text-centered is-sparta" aria-label="edit"
                    onclick='$("#modal-edit").addClass("is-active")'>
@@ -149,7 +146,7 @@
                                     <label class="label" for="input-area">지역</label>
 
                                     <p class="control">
-                                        <select id = 'input-area'>
+                                        <select id='input-area'>
                                             <option value="서울" selected>서울</option>
                                             <option value="경기">인천</option>
                                             <option value="대전">대전</option>
@@ -187,7 +184,7 @@
 
                                     <p class="control">
 
-                                        <select id = 'input-tbox'>
+                                        <select id='input-tbox'>
                                             <option value="lady-t" selected>레이디 티</option>
                                             <option value="senior-t">시니어 티</option>
                                             <option value="regular-t">레귤러 티</option>
@@ -230,7 +227,7 @@
 
     </div>
 </section>
-{%  if status %}
+{% if status %}
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
