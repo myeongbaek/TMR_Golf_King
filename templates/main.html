@@ -151,10 +151,35 @@
         function close_box(){
             $('#post-box').hide()
         }
+        function mypage_in() {
+
+            $.ajax({
+                type: "POST",
+                url: "/app/mypage_in",
+
+                success: function (response) {
+                    console.log("success")
+                    window.location.replace("/user")
+                    {#메인으로 가는 클라이언트 명령어#}
+
+                }
+            });
+        }
+
     </script>
 </head>
 
 <body>
+<div class="header">
+    <article class="top_bar">
+        <section>
+            <menu id="headerMenu">
+                    <button onclick="mypage_in()">마이페이지</button>
+            </menu>
+        </section>
+    </article>
+</div>
+
 <div class="mytitle">
     <h1>내일은 나도 골프왕!</h1>
     <button onclick="open_box()">기록하기</button>
