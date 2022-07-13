@@ -172,7 +172,7 @@ def save_img():
 @app.route('/mypage_in', methods=['POST'])
 def mypage_in():
     nickname_receive = request.form['nickname_give']
-    user_info = db.users.find_one({"username": nickname_receive}, {"_id": False})
+    user_info = db.users.find_one({"nickname": nickname_receive}, {"_id": False})
     return jsonify({"result": "success", "user_info": user_info})
 
 if __name__ == '__main__':
