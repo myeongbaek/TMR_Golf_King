@@ -147,20 +147,22 @@ def save_img():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         username = payload["id"]
-        name_receive = request.form["name_give"]
+        nickname_receive = request.form["nickname_give"]
+        password_receive = request.form["password_give"]
+        area_receive = request.form["area_give"]
+        tbox_receive = request.form["tbox_give"]
+        address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "profile_name": name_receive,
+            "profile_nickname": nickname_receive,
+            "profile_password": password_receive,
+            "profile_area": area_receive,
+            "profile_address": address_receive,
+            "profile_nickname": nickname_receive,
+            "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }
-        if 'file_give' in request.files:
-            file = request.files["file_give"]
-            filename = secure_filename(file.filename)
-            extension = filename.split(".")[-1]
-            file_path = f"profile_pics/{username}.{extension}"
-            file.save("./static/"+file_path)
-            new_doc["profile_pic"] = filename
-            new_doc["profile_pic_real"] = file_path
+
         db.users.update_one({'username': payload['id']}, {'$set':new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
