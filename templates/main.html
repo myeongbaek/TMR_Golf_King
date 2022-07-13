@@ -12,7 +12,7 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <title>내일은 나도 골프왕</title>
+    <title>내일은 나도 골프왕 | 스코어 보드</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
@@ -131,7 +131,7 @@
             let date = $('#date').val()
             let field = $('#field').val()
             let score_mix = $('#score').val()
-            let score = score_mix.replace(/\D/g, "")
+            let score = Number(score_mix)
             {# 적용이 안돼요..#}
 
             $.ajax({
@@ -151,17 +151,20 @@
         function close_box(){
             $('#post-box').hide()
         }
-        function mypage_in() {
 
+        function mypage_in() {
+            let nickname = document.getElementById("nickname").innerText;
             $.ajax({
                 type: "POST",
-                url: "/app/mypage_in",
+                url: "/mypage_in",
+                data: {nickname_give: nickname},
 
                 success: function (response) {
-                    console.log("success")
-                    window.location.replace("/user")
-                    {#메인으로 가는 클라이언트 명령어#}
-
+                    if (response['result'] == 'success') {
+                        {#console.log({nickname})#}
+                        {#console.log(response)#}
+                        window.location.href = "/user/" + response['user_info']['username']
+                    }
                 }
             });
         }
@@ -174,7 +177,7 @@
     <article class="top_bar">
         <section>
             <menu id="headerMenu">
-                    <button onclick="mypage_in()">마이페이지</button>
+                <button onclick="mypage_in()">마이페이지</button>
             </menu>
         </section>
     </article>
@@ -201,7 +204,7 @@
         <label>장소</label>
     </div>
         <div class="form-floating mb-3">
-        <input id="score" type="number" class="form-control" placeholder="80">
+        <input id="score" type="text" class="form-control" placeholder="80" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 {#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
 {#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
 {#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}

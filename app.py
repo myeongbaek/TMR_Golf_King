@@ -37,7 +37,7 @@ def login():
     return render_template('login.html', msg=msg)
 
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET'])
 def user(username):
     # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
     token_receive = request.cookies.get('mytoken')
@@ -46,6 +46,7 @@ def user(username):
         status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
 
         user_info = db.users.find_one({"username": username}, {"_id": False})
+
         return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
@@ -142,7 +143,7 @@ def score_get():
 
 
 @app.route('/update_profile', methods=['POST'])
-def save_img():
+def update_profile():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
@@ -158,7 +159,6 @@ def save_img():
             "profile_password": password_receive,
             "profile_area": area_receive,
             "profile_address": address_receive,
-            "profile_nickname": nickname_receive,
             "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }
@@ -167,6 +167,12 @@ def save_img():
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
+@app.route('/mypage_in', methods=['POST'])
+def mypage_in():
+    nickname_receive = request.form['nickname_give']
+    user_info = db.users.find_one({"nickname": nickname_receive}, {"_id": False})
+    return jsonify({"result": "success", "user_info": user_info})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
