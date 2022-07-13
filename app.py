@@ -157,16 +157,16 @@ def save_img():
         username = payload["id"]
         nickname_receive = request.form["nickname_give"]
         password_receive = request.form["password_give"]
+        password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
         address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "profile_nickname": nickname_receive,
-            "profile_password": password_receive,
+            "nickname": nickname_receive,
+            "password": password_hash,
             "profile_area": area_receive,
             "profile_address": address_receive,
-            "profile_nickname": nickname_receive,
             "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }
