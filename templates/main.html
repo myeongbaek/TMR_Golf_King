@@ -153,13 +153,15 @@
         }
 
         function mypage_in() {
+            let nickname = $('#nickname').val()
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/mypage_in",
+                data: {nickname_give: nickname},
 
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        window.location.href = "/user/" + username
+                        window.location.href = "/user/" + response['username']
                     }
                 }
             });
