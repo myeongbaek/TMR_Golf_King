@@ -37,17 +37,16 @@ def login():
     return render_template('login.html', msg=msg)
 
 
-@app.route('/user/<username>', methods=['GET'])
-def user(username):
+@app.route('/user/<userhash>', methods=['GET'])
+def user(userhash):
     # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
     token_receive = request.cookies.get('mytoken')
+    user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = (username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-
-        user_info = db.users.find_one({"username": username}, {"_id": False})
-
-        return render_template('user.html', user_info=user_info, status=status)
+        # status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        return render_template('user.html', user_info=user_info)
+        # return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -57,7 +56,7 @@ def sign_in():
     # 로그인
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-    user_hash = hashlib.sha256(username_receive.encode('utf-8')).hexdigest()
+    userhash = hashlib.sha256(username_receive.encode('utf-8')).hexdigest()
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.users.find_one({'username': username_receive, 'password': pw_hash})
 
@@ -71,7 +70,7 @@ def sign_in():
         except AttributeError:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'token': token,'user_hash':user_hash})
+        return jsonify({'result': 'success', 'token': token, 'userhash': userhash})
 
     # 찾지 못하면
     else:
@@ -107,11 +106,11 @@ def check_dupnick():
     exists = bool(db.users.find_one({"nickname": nickname_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-@app.route("/main/<username>", methods=['GET'])
-def main(username):
-    user_info = db.users.find_one({"username": username}, {"_id": False})
+@app.route("/main/<userhash>", methods=['GET'])
+def main(userhash):
+    user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     # username find_one nickname 받은 후 assign
-    score_list = list(db.golf_scores.find({"username": username}, {'_id': False}))
+    score_list = list(db.golf_scores.find({"userhash": userhash}, {'_id': False}))
     if len(score_list) != 0:
         total_score, count = 0, 0
         for record in score_list:
@@ -124,14 +123,16 @@ def main(username):
 
 @app.route("/golf", methods=["POST"])
 def score_post():
-    username_receive = request.form['username_give']
+    userhash_receive = request.form['userhash_give']
+    nickname_receive = request.form['nickname_give']
     date_receive = request.form['date_give']
     field_receive = request.form['field_give']
     score_receive = request.form['score_give']
     grade_receive = request.form['grade_give']
 
     doc = {
-        'username': username_receive,
+        'userhash': userhash_receive,
+        'nickname': nickname_receive,
         'date': date_receive,
         'field': field_receive,
         'score': score_receive,
@@ -175,11 +176,12 @@ def save_img():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
-@app.route('/mypage_in', methods=['POST'])
+@app.route('/mypage_in', methods=['GET'])
 def mypage_in():
-    nickname_receive = request.form['nickname_give']
-    user_info = db.users.find_one({"nickname": nickname_receive}, {"_id": False})
-    return jsonify({"result": "success", "user_info": user_info})
+    # userhash_receive = request.form['userhash_give']
+    # user_info = db.users.find_one({"userhash": userhash_receive}, {"_id": False})
+    return jsonify({"result": "success"})
+    # , "user_info": user_info})
 
 
 

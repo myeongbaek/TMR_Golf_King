@@ -107,8 +107,7 @@
                 success: function (response) {
                     let rows = response['golf_scores']
                     for (let i = 0; i < rows.length; i++) {
-                        let username = rows[i]['username']
-                        // TODO: 나중에는 로그인 페이지에서 고유값을 받아올것
+                        let nickname = rows[i]['nickname']
                         let date = rows[i]['date']
                         let field = rows[i]['field']
                         let score = rows[i]['score']
@@ -116,7 +115,7 @@
 
 
                         let temp_html = `<tr>
-                                            <td>${username}</td>
+                                            <td>${nickname}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
                                             <td>${score}타</td>
@@ -131,7 +130,10 @@
         }
 
         function posting() {
-            let username = $('#username').val()
+            {#let username = $('#username').val()#}
+            let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
+            let nickname = JSON.parse('{{ user_info.nickname | tojson }}');
+
             let date = $('#date').val()
             let field = $('#field').val()
             let score_mix = $('#score').val()
@@ -154,7 +156,7 @@
             $.ajax({
                     type: 'POST',
                     url: '/golf',
-                    data: {username_give: username, date_give: date, field_give: field, score_give: score, grade_give: grade},
+                    data: {userhash_give: userhash, nickname_give: nickname, date_give: date, field_give: field, score_give: score, grade_give: grade},
                     success: function (response) {
                         alert(response['msg'])
                         window.location.reload()
@@ -170,18 +172,15 @@
         }
 
         function mypage_in() {
-            let nickname = document.getElementById("nickname").innerText;
+            let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
+            console.log(userhash)
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "/mypage_in",
-                data: {
-                    nickname_give: nickname
-
-                },
-
+                data: {},
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        window.location.href = "/user/" + response['user_info']['username']
+                        window.location.href = "/user/" + userhash
                     }
                 }
             });
@@ -207,14 +206,13 @@
     <button onclick="open_box()">기록하기</button>
 </div>
 <div class="myaverage">
-    <text><span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타
-    </text>
+    <text><span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타</text>
 </div>
 <div class="scorelist" id="post-box">
-    <div class="form-floating mb-3">
-        <input id="username" type="text" class="form-control" placeholder="username">
-        <label>아이디</label>
-    </div>
+{#    <div class="form-floating mb-3">#}
+{#        <input id="username" type="text" class="form-control" placeholder="username">#}
+{#        <label>아이디</label>#}
+{#    </div>#}
     <div class="form-floating mb-3">
         <input id="date" type="date" class="form-control" placeholder="2022-07-11">
         <label>날짜</label>
@@ -240,7 +238,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">아이디</th>
+        <th scope="col">닉네임</th>
         <th scope="col">날짜</th>
         <th scope="col">장소</th>
         <th scope="col">기록</th>

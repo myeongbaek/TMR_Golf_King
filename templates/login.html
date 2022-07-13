@@ -93,8 +93,8 @@
                 success: function (response) {
                     if (response['result'] == 'success') {
                         $.cookie('mytoken', response['token'], {path: '/'});
-                        window.location.href = "/main/" + response['user_hash']
-                        {#메인으로 가는 클라이언트 명령어#}
+                        window.location.href = "/main/" + response['userhash']
+
                     } else {
                         alert(response['msg'])
                     }
