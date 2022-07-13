@@ -7,6 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="/static/favicon.png" type="image/gif" sizes="16x16">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -25,7 +26,7 @@
             width: 100%;
             height: 250px;
 
-            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://user-images.githubusercontent.com/99665886/178204513-e9a428d7-09a4-4118-831b-827d8576c962.png');
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('https://user-images.githubusercontent.com/99665886/178204513-e9a428d7-09a4-4118-831b-827d8576c962.png');
             background-position: center;
             background-size: cover;
 
@@ -57,7 +58,7 @@
         .myaverage {
             width: 100%;
             height: 40px;
-            background-color: darkseagreen;
+            background-color: yellowgreen;
             background-position: center;
             background-size: cover;
 
@@ -91,6 +92,35 @@
 
         .mybtns > button {
             margin-right: 10px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            height: 0px
+        }
+
+        .btn_mypage {
+            border: 1px solid transparent;
+            margin-right: 20px;
+            background-color: transparent;
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .btn_mypage:hover {
+            font-weight: 800;
+        }
+
+        .green_btn:hover {
+            background-color: seagreen;
+        }
+        .gray_btn:hover {
+            background-color: lightgrey;
+            color: black;
         }
     </style>
     <script>
@@ -154,20 +184,28 @@
                 grade = "벌새"
             }
             $.ajax({
-                    type: 'POST',
-                    url: '/golf',
-                    data: {userhash_give: userhash, nickname_give: nickname, date_give: date, field_give: field, score_give: score, grade_give: grade},
-                    success: function (response) {
-                        alert(response['msg'])
-                        window.location.reload()
-                    }
-                });
-            }
+                type: 'POST',
+                url: '/golf',
+                data: {
+                    userhash_give: userhash,
+                    nickname_give: nickname,
+                    date_give: date,
+                    field_give: field,
+                    score_give: score,
+                    grade_give: grade
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
 
-        function open_box(){
+        function open_box() {
             $('#post-box').show()
         }
-        function close_box(){
+
+        function close_box() {
             $('#post-box').hide()
         }
 
@@ -195,7 +233,7 @@
     <article class="top_bar">
         <section>
             <menu id="headerMenu">
-                <button onclick="mypage_in()">마이페이지</button>
+                <button class="btn_mypage" onclick="mypage_in()">마이페이지</button>
             </menu>
         </section>
     </article>
@@ -205,36 +243,43 @@
     <h1>내일은 나도 골프왕!</h1>
     <button onclick="open_box()">기록하기</button>
 </div>
-<div class="myaverage">
-    <text><span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타</text>
-</div>
-<div class="scorelist" id="post-box">
-{#    <div class="form-floating mb-3">#}
-{#        <input id="username" type="text" class="form-control" placeholder="username">#}
-{#        <label>아이디</label>#}
-{#    </div>#}
-    <div class="form-floating mb-3">
-        <input id="date" type="date" class="form-control" placeholder="2022-07-11">
-        <label>날짜</label>
+{% if status %}
+<section>
+    <div class="myaverage">
+        <text><span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span
+                id="average">{{ average_score }}</span>타
+        </text>
     </div>
-    <div class="form-floating mb-3">
-        <input id="field" type="text" class="form-control" placeholder="해비치 - 남양주 CC">
-        <label>장소</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input id="score" type="text" class="form-control" placeholder="80"
-               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
-        {#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
-        {#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
-        {#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
-        <label>타수</label>
-    </div>
+    <div class="scorelist" id="post-box">
+        {#    <div class="form-floating mb-3">#}
+        {#        <input id="username" type="text" class="form-control" placeholder="username">#}
+        {#        <label>아이디</label>#}
+        {#    </div>#}
+        <div class="form-floating mb-3">
+            <input id="date" type="date" class="form-control" placeholder="2022-07-11">
+            <label>날짜</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="field" type="text" class="form-control" placeholder="해비치 - 남양주 CC">
+            <label>장소</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="score" type="text" class="form-control" placeholder="80"
+                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+            {#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
+            {#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
+            {#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
+            <label>타수</label>
+        </div>
 
-    <div class="mybtns">
-        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
-        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+        <div class="mybtns">
+            <button onclick="posting()" type="button" class="btn btn-dark green_btn">기록하기</button>
+            <button onclick="close_box()" type="button" class="btn btn-outline-dark gray_btn">닫기</button>
+        </div>
     </div>
-</div>
+</section>
+{% endif %}
+
 <table class="table">
     <thead>
     <tr>

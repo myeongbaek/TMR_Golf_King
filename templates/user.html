@@ -9,6 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+{#    favicon#}
+    <link rel="icon" href="/static/favicon.png" type="image/gif" sizes="16x16">
+
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
@@ -26,7 +29,7 @@
 
     <style>
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
+            background-color: yellowgreen;
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -38,19 +41,19 @@
         }
 
         .is-sparta {
-            color: #e8344e !important;
+            color: seagreen !important;
         }
 
         .button.is-sparta {
-            background-color: #e8344e;
+            background-color: seagreen;
             border-color: transparent;
             color: #fff !important;
         }
 
         .button.is-sparta.is-outlined {
             background-color: transparent;
-            border-color: #e8344e;
-            color: #e8344e !important;
+            border-color: seagreen;
+            color: seagreen !important;
         }
 
         .modal-content {
@@ -117,10 +120,10 @@
 <body class="has-navbar-fixed-top">
 <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="/">
+        <a class="navbar-item" href={{ "/main/" + user_info.userhash }}>
             <img src="{{ url_for("static", filename="logo.png") }}">
             <strong class="is-sparta"
-                    style="font-family: 'Stylish', sans-serif;font-size: larger;">TMR_GFK</strong>
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">내일은 나도 골프왕</strong>
         </a>
     </div>
 </nav>
@@ -144,7 +147,7 @@
 
             </div>
         </article>
-{#        {% if status %}#}
+        {% if status %}
             <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
                 <a class="button level-item has-text-centered is-sparta" aria-label="edit"
                    onclick='$("#modal-edit").addClass("is-active")'>
@@ -275,11 +278,11 @@
                 <button class="modal-close is-large" aria-label="close"
                         onclick='$("#modal-edit").removeClass("is-active")'></button>
             </div>
-{#        {% endif %}#}
+        {% endif %}
 
     </div>
 </section>
-{#{% if status %}#}
+{% if status %}
     <section class="section">
         <article class="media">
             <figure class="media-left" style="align-self: center">
@@ -366,6 +369,6 @@
 
         </div>
     </section>
-{#{% endif %}#}
+{% endif %}
 </body>
 </html>
