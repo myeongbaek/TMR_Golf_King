@@ -53,6 +53,7 @@
         .mytitle > button:hover {
             border: 2px solid white;
         }
+
         .myaverage {
             width: 100%;
             height: 40px;
@@ -68,6 +69,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .scorelist {
             width: 95%;
             max-width: 500px;
@@ -86,13 +88,14 @@
 
             margin-top: 20px;
         }
+
         .mybtns > button {
             margin-right: 10px;
         }
     </style>
     <script>
-        $(document).ready(function(){
-          listing();
+        $(document).ready(function () {
+            listing();
         });
 
         function listing() {
@@ -103,20 +106,21 @@
                 data: {},
                 success: function (response) {
                     let rows = response['golf_scores']
-                    for(let i = 0; i < rows.length; i++) {
+                    for (let i = 0; i < rows.length; i++) {
                         let username = rows[i]['username']
                         // TODO: 나중에는 로그인 페이지에서 고유값을 받아올것
                         let date = rows[i]['date']
                         let field = rows[i]['field']
                         let score = rows[i]['score']
-                        // let grade = rows[i]['grade'] #TODO: score - 72 결과에 따라 그레이드 적용
+                        let grade = rows[i]['grade']
+
 
                         let temp_html = `<tr>
                                             <td>${username}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
                                             <td>${score}타</td>
-                                            <td>싱글</td>
+                                            <td>${grade}</td>
                                         </tr>
                         `
 
@@ -131,19 +135,32 @@
             let date = $('#date').val()
             let field = $('#field').val()
             let score_mix = $('#score').val()
-            let score = score_mix.replace(/\D/g, "")
-            {# 적용이 안돼요..#}
+            let score = Number(score_mix)
 
+            let grade = ""
+            if (score - 72 <= -1) {
+                grade = "독수리"
+            } else if (score - 72 <= 7) {
+                grade = "매"
+            } else if (score - 72 <= 17) {
+                grade = "학"
+            } else if (score - 72 <= 27) {
+                grade = "까치"
+            } else if (score - 72 <= 71) {
+                grade = "참새"
+            } else {
+                grade = "벌새"
+            }
             $.ajax({
-                type: 'POST',
-                url: '/golf',
-                data: {username_give: username, date_give: date, field_give: field, score_give: score},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                }
-            });
-        }
+                    type: 'POST',
+                    url: '/golf',
+                    data: {username_give: username, date_give: date, field_give: field, score_give: score, grade_give: grade},
+                    success: function (response) {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                });
+            }
 
         function open_box(){
             $('#post-box').show()
@@ -164,13 +181,12 @@
 
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        {#console.log({nickname})#}
-                        {#console.log(response)#}
                         window.location.href = "/user/" + response['user_info']['username']
                     }
                 }
             });
         }
+
 
     </script>
 </head>
@@ -191,7 +207,8 @@
     <button onclick="open_box()">기록하기</button>
 </div>
 <div class="myaverage">
-    <text> <span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타</text>
+    <text><span id="nickname">{{ user_info.nickname }}</span> 님의 평균 타수: <span id="average">{{ average_score }}</span>타
+    </text>
 </div>
 <div class="scorelist" id="post-box">
     <div class="form-floating mb-3">
@@ -206,11 +223,12 @@
         <input id="field" type="text" class="form-control" placeholder="해비치 - 남양주 CC">
         <label>장소</label>
     </div>
-        <div class="form-floating mb-3">
-        <input id="score" type="number" class="form-control" placeholder="80">
-{#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
-{#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
-{#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
+    <div class="form-floating mb-3">
+        <input id="score" type="text" class="form-control" placeholder="80"
+               oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+        {#        <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
+        {#        옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
+        {#            test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
         <label>타수</label>
     </div>
 
@@ -221,7 +239,7 @@
 </div>
 <table class="table">
     <thead>
-      <tr>
+    <tr>
         <th scope="col">아이디</th>
         <th scope="col">날짜</th>
         <th scope="col">장소</th>
@@ -229,11 +247,11 @@
         <th scope="col">등급</th>
 
 
-      </tr>
+    </tr>
     </thead>
     <tbody id="score-box">
     </tbody>
-  </table>
+</table>
 
 </body>
 

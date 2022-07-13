@@ -128,12 +128,14 @@ def score_post():
     date_receive = request.form['date_give']
     field_receive = request.form['field_give']
     score_receive = request.form['score_give']
+    grade_receive = request.form['grade_give']
 
     doc = {
         'username': username_receive,
         'date': date_receive,
         'field': field_receive,
-        'score': score_receive
+        'score': score_receive,
+        'grade': grade_receive
     }
 
     db.golf_scores.insert_one(doc)
