@@ -12,7 +12,7 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <title>내일은 나도 골프왕</title>
+    <title>내일은 나도 골프왕 | 스코어 보드</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
@@ -151,10 +151,38 @@
         function close_box(){
             $('#post-box').hide()
         }
+
+        function mypage_in() {
+            let nickname = document.getElementById("nickname").innerText;
+            $.ajax({
+                type: "POST",
+                url: "/mypage_in",
+                data: {nickname_give: nickname},
+
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        {#console.log({nickname})#}
+                        {#console.log(response)#}
+                        window.location.href = "/user/" + response['user_info']['username']
+                    }
+                }
+            });
+        }
+
     </script>
 </head>
 
 <body>
+<div class="header">
+    <article class="top_bar">
+        <section>
+            <menu id="headerMenu">
+                <button onclick="mypage_in()">마이페이지</button>
+            </menu>
+        </section>
+    </article>
+</div>
+
 <div class="mytitle">
     <h1>내일은 나도 골프왕!</h1>
     <button onclick="open_box()">기록하기</button>
