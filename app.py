@@ -57,7 +57,7 @@ def sign_in():
     # 로그인
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-
+    user_hash = hashlib.sha256(username_receive.encode('utf-8')).hexdigest()
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     result = db.users.find_one({'username': username_receive, 'password': pw_hash})
 
@@ -71,7 +71,8 @@ def sign_in():
         except AttributeError:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'token': token})
+        return jsonify({'result': 'success', 'token': token,'user_hash':user_hash})
+
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
@@ -81,11 +82,14 @@ def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
     nickname_receive = request.form['nickname_give']
+    username_hash = hashlib.sha256(username_receive.encode('utf-8')).hexdigest()
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+
     doc = {
         "username": username_receive,                               # 아이디
+        "userhash": username_hash,
         "password": password_hash,                                   # 비밀번호
-        "nickname": nickname_receive                                # 이름(닉네임)
+        "nickname": nickname_receive,                                # 이름(닉네임)
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -174,6 +178,8 @@ def mypage_in():
     nickname_receive = request.form['nickname_give']
     user_info = db.users.find_one({"nickname": nickname_receive}, {"_id": False})
     return jsonify({"result": "success", "user_info": user_info})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

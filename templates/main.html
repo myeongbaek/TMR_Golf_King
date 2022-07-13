@@ -157,7 +157,10 @@
             $.ajax({
                 type: "POST",
                 url: "/mypage_in",
-                data: {nickname_give: nickname},
+                data: {
+                    nickname_give: nickname
+
+                },
 
                 success: function (response) {
                     if (response['result'] == 'success') {
