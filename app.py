@@ -143,15 +143,7 @@ def main(userhash):
 
 @app.route("/golf", methods=["POST"])
 def score_post():
-    userhash_receive = request.form["userhash_give"]
-
-    if request.form['page_give'] is not None:
-        try:
-            score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
-            return jsonify({'golf_scores': score_list, 'msg': '등록 완료!'})
-        except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-            return jsonify({"result": "fail", 'msg': '불러오기 실패'})
-    else:
+        userhash_receive = request.form['userhash_give']
         nickname_receive = request.form['nickname_give']
         date_receive = request.form['date_give']
         field_receive = request.form['field_give']
