@@ -16,8 +16,11 @@ import certifi
 ca = certifi.where()
 
 from pymongo import MongoClient
+
 client = MongoClient('mongodb+srv://test:sparta@cluster0.pbhz9.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
+
+
 #
 @app.route('/')
 def home():
@@ -44,9 +47,12 @@ def user(userhash):
     token_receive = request.cookies.get('mytoken')
     user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        status = user_info["username"] == payload["id"]  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-        return render_template('user.html', user_info=user_info, status=status)
+
+        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
+        return render_template('user.html', user_info=user_info)
+
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -62,8 +68,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         try:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
@@ -76,6 +82,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -85,10 +92,10 @@ def sign_up():
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
     doc = {
-        "username": username_receive,                               # 아이디
+        "username": username_receive,  # 아이디
         "userhash": username_hash,
-        "password": password_hash,                                   # 비밀번호
-        "nickname": nickname_receive,                                # 이름(닉네임)
+        "password": password_hash,  # 비밀번호
+        "nickname": nickname_receive,  # 이름(닉네임)
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -100,11 +107,13 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+
 @app.route('/sign_up/check_dupnick', methods=['POST'])
 def check_dupnick():
     nickname_receive = request.form['nickname_give']
     exists = bool(db.users.find_one({"nickname": nickname_receive}))
     return jsonify({'result': 'success', 'exists': exists})
+
 
 @app.route("/main/<userhash>", methods=['GET'])
 def main(userhash):
@@ -131,27 +140,37 @@ def main(userhash):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+
 @app.route("/golf", methods=["POST"])
 def score_post():
-    userhash_receive = request.form['userhash_give']
-    nickname_receive = request.form['nickname_give']
-    date_receive = request.form['date_give']
-    field_receive = request.form['field_give']
-    score_receive = request.form['score_give']
-    grade_receive = request.form['grade_give']
+    userhash_receive = request.form["userhash_give"]
 
-    doc = {
-        'userhash': userhash_receive,
-        'nickname': nickname_receive,
-        'date': date_receive,
-        'field': field_receive,
-        'score': score_receive,
-        'grade': grade_receive
-    }
+    if request.form['page_give'] is not None:
+        try:
+            score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
+            return jsonify({'golf_scores': score_list, 'msg': '등록 완료!'})
+        except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+            return jsonify({"result": "fail", 'msg': '불러오기 실패'})
+    else:
+        nickname_receive = request.form['nickname_give']
+        date_receive = request.form['date_give']
+        field_receive = request.form['field_give']
+        score_receive = request.form['score_give']
+        grade_receive = request.form['grade_give']
 
-    db.golf_scores.insert_one(doc)
+        doc = {
+            'userhash': userhash_receive,
+            'nickname': nickname_receive,
+            'date': date_receive,
+            'field': field_receive,
+            'score': score_receive,
+            'grade': grade_receive
+        }
 
-    return jsonify({'msg': '등록 완료!'})
+        db.golf_scores.insert_one(doc)
+
+        return jsonify({'msg': '등록 완료!'})
+
 
 @app.route("/golf", methods=["GET"])
 def score_get():
@@ -159,46 +178,56 @@ def score_get():
     return jsonify({'golf_scores': score_list})
 
 
+@app.route("/mygolf", methods=["POST"])
+def myscore_post():
+    userhash_receive = request.form["userhash_give"]
+    try:
+        score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
+        return jsonify({'result':'success', 'golf_scores': score_list, 'msg': '등록 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", 'msg': '불러오기 실패'})
+
+
 @app.route('/update_profile', methods=['POST'])
-def save_img():
+def update_profile():
     token_receive = request.cookies.get('mytoken')
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        username = payload["id"]
-        nickname_receive = request.form["nickname_give"]
+
+        userhash_receive = request.form['userhash_give']
+        user_info = db.users.find_one({"userhash": userhash_receive}, {"_id": False})
+
         password_receive = request.form["password_give"]
         password_update = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-
-        user_info = db.users.find_one({"username": payload["id"]}, {"_id": False})
 
         if user_info['password'] != password_receive:
             password_register = password_update
         else:
             password_register = user_info['password']
 
+        nickname_receive = request.form["nickname_give"]
+
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
-        address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "nickname": nickname_receive,
             "password": password_register,
+            "nickname": nickname_receive,
+            "prifile_nickname": nickname_receive,
+
             "profile_area": area_receive,
-            "profile_address": address_receive,
             "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }
 
-        db.users.update_one({'username': payload['id']}, {'$set':new_doc})
+        db.users.update_one({'userhash': userhash_receive}, {'$set': new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+
 @app.route('/mypage_in', methods=['GET'])
 def mypage_in():
     return jsonify({"result": "success"})
-
-
 
 
 if __name__ == '__main__':
