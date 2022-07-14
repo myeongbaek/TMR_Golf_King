@@ -9,6 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+{#    favicon#}
+    <link rel="icon" href="/static/favicon.png" type="image/gif" sizes="16x16">
+
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
@@ -26,7 +29,9 @@
 
     <style>
         body {
+
             background-color: darkseagreen;
+
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -38,19 +43,23 @@
         }
 
         .is-sparta {
+
             color: #ff0000 !important;
         }
 
         .button.is-sparta {
             background-color: darkseagreen;
+
             border-color: transparent;
             color: #fff !important;
         }
 
         .button.is-sparta.is-outlined {
             background-color: transparent;
+
             border-color: #0da90d;
             color: #007d00 !important;
+
         }
 
         .modal-content {
@@ -197,10 +206,12 @@
 <nav class="navbar is-fixed-top is-white" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
 
+
         <a class="navbar-item" href="/main/{{user_info.userhash}}">
             <img src="{{ url_for('static', filename='logo.png') }}">
+
             <strong class="is-sparta"
-                    style="font-family: 'Stylish', sans-serif;font-size: larger;">TMR_GFK</strong>
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">내일은 나도 골프왕</strong>
         </a>
     </div>
 </nav>
@@ -222,6 +233,7 @@
 
             </div>
         </article>
+
         <nav id="btns-me" class="level is-mobile" style="margin-top:2rem">
             <a class="button level-item has-text-centered is-sparta" aria-label="edit"
                onclick='profile_edit()'>
@@ -247,6 +259,7 @@
                             <div class="field">
                                 <label class="label" for="userid">아이디</label>
 
+
                                 <p class="control" id="userid">
 
                                     {{ user_info.username }}
@@ -255,8 +268,10 @@
                             </div>
                             <!-- 닉네임 -->
 
+
                             <div class="field">
                                 <label class="label" for="input-nickname">닉네임</label>
+
 
                                 <p class="control">
                                 <div class="field has-addons">
@@ -319,6 +334,7 @@
                                 </p>
                             </div>
 
+
                             <!--  주소 -->
                             <div class="field">
                                 <label class="label" for="input-address">주소</label>
@@ -346,6 +362,7 @@
                             </div>
 
                             <!-- 자기소개 -->
+
                             <div class="field">
                                 <label class="label" for="input-about">나의 기록</label>
 

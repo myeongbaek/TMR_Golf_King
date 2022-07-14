@@ -24,6 +24,7 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload['id']}, {"_id": False})
         return render_template('login.html')
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -43,10 +44,12 @@ def user(userhash):
     token_receive = request.cookies.get('mytoken')
     user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     try:
+
         #payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         #status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
 
         return render_template('user.html', user_info=user_info)
+
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -108,18 +111,28 @@ def check_dupnick():
 
 @app.route("/main/<userhash>", methods=['GET'])
 def main(userhash):
+    token_receive = request.cookies.get('mytoken')
     user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
-    # username find_one nickname 받은 후 assign
-    score_list = list(db.golf_scores.find({"userhash": userhash}, {'_id': False}))
-    if len(score_list) != 0:
-        total_score, count = 0, 0
-        for record in score_list:
-            total_score += int(record['score'])
-            count += 1
-        average_score = total_score / count
-    else:
-        average_score = 0
-    return render_template("main.html", user_info=user_info, average_score=int(average_score))
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        status = user_info["username"] == payload["id"]  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
+        # username find_one nickname 받은 후 assign
+        score_list = list(db.golf_scores.find({"userhash": userhash}, {'_id': False}))
+
+        if len(score_list) != 0:
+            total_score, count = 0, 0
+            for record in score_list:
+                total_score += int(record['score'])
+                count += 1
+            average_score = total_score / count
+        else:
+            average_score = 0
+
+        return render_template("main.html", user_info=user_info, average_score=int(average_score), status=status)
+
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for("home"))
 
 @app.route("/golf", methods=["POST"])
 def score_post():
@@ -160,12 +173,15 @@ def update_profile():
         password_receive = request.form["password_give"]
         password_update = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
+
         if user_info['password'] != password_receive:
             password_register = password_update
         else:
             password_register = user_info['password']
 
+
         nickname_receive = request.form["nickname_give"]
+
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
         address_receive = request.form["address_give"]
@@ -174,6 +190,7 @@ def update_profile():
             "password":password_register,
             "nickname":nickname_receive,
             "prifile_nickname": nickname_receive,
+
             "profile_area": area_receive,
             "profile_address": address_receive,
             "profile_tbox": tbox_receive,
@@ -187,10 +204,8 @@ def update_profile():
 
 @app.route('/mypage_in', methods=['GET'])
 def mypage_in():
-    # userhash_receive = request.form['userhash_give']
-    # user_info = db.users.find_one({"userhash": userhash_receive}, {"_id": False})
     return jsonify({"result": "success"})
-    # , "user_info": user_info})
+
 
 
 

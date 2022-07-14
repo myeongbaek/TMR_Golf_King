@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +100,9 @@
       <workItem from="1657707994425" duration="1473000" />
       <workItem from="1657712621317" duration="14000" />
       <workItem from="1657712638387" duration="5000" />
-      <workItem from="1657712669992" duration="3530000" />
+      <workItem from="1657712669992" duration="4206000" />
+      <workItem from="1657725557964" duration="1078000" />
+      <workItem from="1657726899607" duration="7055000" />
     </task>
     <servers />
   </component>
