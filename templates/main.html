@@ -219,11 +219,7 @@
         }
 
         function posting() {
-            {
-                #let
-                username = $('#username').val()
-            #
-            }
+
             let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
             let nickname = JSON.parse('{{ user_info.nickname | tojson }}');
 
@@ -332,9 +328,6 @@
         <div class="form-floating mb-3">
             <input id="score" type="text" class="form-control" placeholder="80"
                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
-            {# <input id="score" type="text" pattern="\d*" maxlength="5" class="form-control" placeholder="80"/>#}
-            {# 옵션2) number 타입은 최대 글자수 설정해줄 수 없어서 정규식으로 숫자만 입력될 수 있게 설정#}
-            {# test method 적용: alert 숫자만 입력해주세요 if 조건문 True#}
             <label>타수</label>
         </div>
 
