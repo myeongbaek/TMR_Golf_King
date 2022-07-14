@@ -43,10 +43,10 @@ def user(userhash):
     token_receive = request.cookies.get('mytoken')
     user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        #payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        #status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
         return render_template('user.html', user_info=user_info)
-        # return render_template('user.html', user_info=user_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -150,28 +150,30 @@ def score_get():
 
 
 @app.route('/update_profile', methods=['POST'])
-def save_img():
+def update_profile():
     token_receive = request.cookies.get('mytoken')
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        username = payload["id"]
-        nickname_receive = request.form["nickname_give"]
+
+        userhash_receive = request.form['userhash_give']
+        user_info = db.users.find_one({"userhash": userhash_receive}, {"_id": False})
+
         password_receive = request.form["password_give"]
+        nickname_receive = request.form["nickname_give"]
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
         address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "profile_nickname": nickname_receive,
-            "profile_password": password_receive,
+            "password":password_receive,
+            "nickname":nickname_receive,
+            "prifile_nickname": nickname_receive,
             "profile_area": area_receive,
             "profile_address": address_receive,
-            "profile_nickname": nickname_receive,
             "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }
 
-        db.users.update_one({'username': payload['id']}, {'$set':new_doc})
+        db.users.update_one({'userhash': userhash_receive}, {'$set':new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
