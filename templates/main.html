@@ -13,6 +13,13 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
+        <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Gamja+Flower&family=Stylish&display=swap"
+          rel="stylesheet">
+
     <title>내일은 나도 골프왕 | 스코어 보드</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
@@ -20,6 +27,10 @@
     <style>
         * {
             font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .titletext {
+            font-family: 'Stylish', sans-serif;
         }
 
         .mytitle {
@@ -31,6 +42,7 @@
             background-size: cover;
 
             color: white;
+
 
             display: flex;
             flex-direction: column;
@@ -58,11 +70,12 @@
         .myaverage {
             width: 100%;
             height: 40px;
-            background-color: yellowgreen;
+            background-color: #0da90d;
             background-position: center;
             background-size: cover;
+            opacity: 90%;
 
-            color: black;
+            color: white;
             font-weight: bold;
 
             display: flex;
@@ -98,7 +111,7 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
-            height: 0px
+            height: 0
         }
 
         .btn_mypage {
@@ -116,11 +129,49 @@
         }
 
         .green_btn:hover {
-            background-color: seagreen;
+            background-color: #0da90d;
+            opacity: 90%;
         }
         .gray_btn:hover {
             background-color: lightgrey;
             color: black;
+        }
+
+        .table {
+            width: 95%;
+            margin: auto;
+            text-align: center;
+        }
+        .arrow_box {
+            display: none;
+            position: absolute;
+            width: auto;
+            padding: 8px;
+            right: 95px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            background: #333;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .arrow_box:after {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -10px;
+            border: solid transparent;
+            border-color: rgba(51, 51, 51, 0);
+            border-bottom-color: #333;
+            border-width: 10px;
+            pointer-events: none;
+        }
+
+         span:hover + p.arrow_box {
+            display: block;
         }
     </style>
     <script>
@@ -142,7 +193,6 @@
                         let field = rows[i]['field']
                         let score = rows[i]['score']
                         let grade = rows[i]['grade']
-
 
                         let temp_html = `<tr>
                                             <td>${nickname}</td>
@@ -240,7 +290,7 @@
 </div>
 
 <div class="mytitle">
-    <h1>내일은 나도 골프왕!</h1>
+    <h2 class="titletext">가장 중요한 샷은 바로 그 다음 샷이다 ⛳</h2>
     <button onclick="open_box()">기록하기</button>
 </div>
 {% if status %}
@@ -287,7 +337,17 @@
         <th scope="col">날짜</th>
         <th scope="col">장소</th>
         <th scope="col">기록</th>
-        <th scope="col">등급</th>
+        <th scope="col">등급
+            <span class="grade-table"><img src="/static/question_logo.png" style="padding-bottom: 3px"></span>
+            <p class="arrow_box">
+                ★18홀 기본타수 72타★<br>
+                -16 ~ -1타 독수리 <br>
+                + 0 ~ +7타 매 <br>
+                + 8 ~ +17타 학 <br>
+                +18 ~ +27타 까치 <br>
+                +28 ~ +71타 참새 <br>
+            </p>
+        </th>
 
 
     </tr>
