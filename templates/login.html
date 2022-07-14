@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Gamja+Flower&family=Stylish&display=swap"
           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -25,7 +26,13 @@
     <title>내일은 나도 골프왕</title>
 
     <style>
-        body {
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.3)), url('https://user-images.githubusercontent.com/99665886/178865461-1d147b44-f1c2-44a7-ab79-5cdfecef3cce.png');
 
         }
 
@@ -42,25 +49,23 @@
         .title {
             font-weight: 800;
             font-size: 5rem;
-            font-family: 'Dongle', sans-serif;
-            font-family: 'Gamja Flower', cursive;
-            font-family: 'Stylish', sans-serif;
+        {#font-family: 'Dongle', sans-serif;#}{#font-family: 'Gamja Flower', cursive;#} font-family: 'Stylish', sans-serif;
         }
 
         .is-sparta {
-            color: yellowgreen !important;
+            color: #88BF57 !important;
         }
 
         .button.is-sparta {
-            background-color: yellowgreen;
+            background-color: #88BF57;
             border-color: transparent;
             color: #fff !important;
         }
 
         .button.is-sparta.is-outlined {
             background-color: transparent;
-            border-color: yellowgreen;
-            color: yellowgreen !important;
+            border-color: #88BF57;
+            color: #88BF57 !important;
         }
 
         .mb-3 {
@@ -68,8 +73,20 @@
             color: gray;
             font-size: 15px;
         }
+
         .help {
             color: gray;
+        }
+        .is-transparent {
+            background-color: transparent;
+            color: #88BF57;
+            text-shadow:
+               3px 3px 0 #ffffff,
+             -1px -1px 0 #ffffff,
+              1px -1px 0 #ffffff,
+              -1px 1px 0 #ffffff,
+               1px 1px 0 #ffffff;
+        ;
         }
     </style>
     <script>
@@ -111,7 +128,7 @@
             let username = $("#input-username").val()
             let password = $("#input-password").val()
             let password2 = $("#input-password2").val()
-            let nickname =  $("#input-nickname").val()
+            let nickname = $("#input-nickname").val()
             console.log(username, password, password2, nickname)
 
 
@@ -214,6 +231,7 @@
                 }
             });
         }
+
         function check_dupnick() {
             let nickname = $("#input-nickname").val()
 
@@ -244,7 +262,7 @@
 </head>
 <body>
 <section>
-    <section class="hero is-white">
+    <section class="hero is-transparent">
         <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
             <h1 class="title is-sparta">내일은 나도 골프왕</h1>
         </div>

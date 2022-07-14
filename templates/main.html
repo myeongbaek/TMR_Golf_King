@@ -13,6 +13,13 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
+        <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Gamja+Flower&family=Stylish&display=swap"
+          rel="stylesheet">
+
     <title>내일은 나도 골프왕 | 스코어 보드</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
@@ -20,6 +27,10 @@
     <style>
         * {
             font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .titletext {
+            font-family: 'Stylish', sans-serif;
         }
 
         .mytitle {
@@ -31,6 +42,7 @@
             background-size: cover;
 
             color: white;
+
 
             display: flex;
             flex-direction: column;
@@ -58,7 +70,7 @@
         .myaverage {
             width: 100%;
             height: 40px;
-            background-color: yellowgreen;
+            background-color: #88BF57;
             background-position: center;
             background-size: cover;
 
@@ -122,6 +134,12 @@
             background-color: lightgrey;
             color: black;
         }
+
+        .table {
+            width: 95%;
+            margin: auto;
+            text-align: center;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -142,7 +160,6 @@
                         let field = rows[i]['field']
                         let score = rows[i]['score']
                         let grade = rows[i]['grade']
-
 
                         let temp_html = `<tr>
                                             <td>${nickname}</td>
@@ -240,7 +257,7 @@
 </div>
 
 <div class="mytitle">
-    <h1>내일은 나도 골프왕!</h1>
+    <h2 class="titletext">가장 중요한 샷은 바로 그 다음 샷이다 ⛳</h2>
     <button onclick="open_box()">기록하기</button>
 </div>
 {% if status %}

@@ -21,6 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Gamja+Flower&family=Stylish&display=swap"
           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -28,8 +29,12 @@
 
 
     <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
         body {
-            background-color: yellowgreen;
+            background-color: #88BF57;
             min-height: 100vh;
             padding-top: 3.25rem;
         }
@@ -181,7 +186,7 @@
 
                                     <p class="control">
 
-                                        <input id="input-password" class="input"
+                                        <input type=password id="input-password" class="input"
                                                placeholder="mypassword" value="{{ user_info.password }}">
                                     </p>
                                 </div>

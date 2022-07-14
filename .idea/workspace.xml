@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="34078a86-ebd2-447b-8ee0-3c44f5624955" name="변경" comment="키워드 - 기능, 단위 #issue번호 &#10;&#10;변경사항 : &#10;&#10;# 키워드: 생성, 수정, 추가,고치기,문서화,스타일, 테스트 &#10;# &quot;왜&quot;, &quot;무엇&quot;을 포함하기 &#10;# 제목은 80자 이내로, 긴 내용은 줄바꿈하고 본문에서">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user.html" afterDir="false" />
@@ -99,7 +97,9 @@
       <workItem from="1657712638387" duration="5000" />
       <workItem from="1657712669992" duration="4206000" />
       <workItem from="1657725557964" duration="1078000" />
-      <workItem from="1657726899607" duration="7055000" />
+      <workItem from="1657726899607" duration="7281000" />
+      <workItem from="1657758429734" duration="2194000" />
+      <workItem from="1657760990597" duration="2180000" />
     </task>
     <servers />
   </component>
