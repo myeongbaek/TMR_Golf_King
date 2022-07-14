@@ -158,13 +158,20 @@ def update_profile():
         user_info = db.users.find_one({"userhash": userhash_receive}, {"_id": False})
 
         password_receive = request.form["password_give"]
+        password_update = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+
+        if user_info['password'] != password_receive:
+            password_register = password_update
+        else:
+            password_register = user_info['password']
+
         nickname_receive = request.form["nickname_give"]
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
         address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "password":password_receive,
+            "password":password_register,
             "nickname":nickname_receive,
             "prifile_nickname": nickname_receive,
             "profile_area": area_receive,
