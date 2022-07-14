@@ -140,6 +140,37 @@
             margin: auto;
             text-align: center;
         }
+        .arrow_box {
+            display: none;
+            position: absolute;
+            width: auto;
+            padding: 8px;
+            right: 95px;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            background: #333;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .arrow_box:after {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            margin-left: -10px;
+            border: solid transparent;
+            border-color: rgba(51, 51, 51, 0);
+            border-bottom-color: #333;
+            border-width: 10px;
+            pointer-events: none;
+        }
+
+         span:hover + p.arrow_box {
+            display: block;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -304,7 +335,17 @@
         <th scope="col">날짜</th>
         <th scope="col">장소</th>
         <th scope="col">기록</th>
-        <th scope="col">등급</th>
+        <th scope="col">등급
+            <span class="grade-table"><img src="/static/qustion_logo.png" style="padding-bottom: 3px"></span>
+            <p class="arrow_box">
+                ★18홀 기본타수 72타★<br>
+                -16 ~ -1타 독수리 <br>
+                + 0 ~ +7타 매 <br>
+                + 8 ~ +17타 학 <br>
+                +18 ~ +27타 까치 <br>
+                +28 ~ +71타 참새 <br>
+            </p>
+        </th>
 
 
     </tr>
