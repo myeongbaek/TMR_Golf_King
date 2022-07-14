@@ -90,35 +90,33 @@
 
     <script>
         $(document).ready(function () {
-            listing();
+            profilepage_listing();
         });
 
-        function listing() {
-            let page = "profile_page"
+        function profilepage_listing() {
             let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
             console.log(userhash)
 
             $('#score-box').empty()
             $.ajax({
                 type: 'POST',
-                url: '/golf',
+                url: '/mygolf',
                 data: {
-                    "page_give" : page,
                     "userhash_give" : userhash
                 },
                 success: function (response) {
+                    if (response['result'] == "success") {
+                        let rows = response['golf_scores']
+                        for (let i = 0; i < rows.length; i++) {
+                            let nickname = rows[i]['nickname']
+                            let date = rows[i]['date']
+                            let field = rows[i]['field']
+                            let score = rows[i]['score']
+                            let grade = rows[i]['grade']
+                            console.log(nickname, date, field, score, grade)
 
-                    let rows = response['golf_scores']
-                    for (let i = 0; i < rows.length; i++) {
-                        let nickname = rows[i]['nickname']
-                        let date = rows[i]['date']
-                        let field = rows[i]['field']
-                        let score = rows[i]['score']
-                        let grade = rows[i]['grade']
-                        console.log(nickname, date, field, score, grade)
 
-
-                        let temp_html = `<tr>
+                            let temp_html = `<tr>
                                             <td>${nickname}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
@@ -127,8 +125,11 @@
                                         </tr>
                         `
 
-                        $('#score-box').append(temp_html)
+                            $('#score-box').append(temp_html)
+                        }
                     }
+                    else
+                        console.log(response['msg'])
                 }
             })
         }

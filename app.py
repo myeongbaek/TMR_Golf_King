@@ -16,8 +16,11 @@ import certifi
 ca = certifi.where()
 
 from pymongo import MongoClient
+
 client = MongoClient('mongodb+srv://test:sparta@cluster0.pbhz9.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
+
+
 #
 @app.route('/')
 def home():
@@ -45,8 +48,8 @@ def user(userhash):
     user_info = db.users.find_one({"userhash": userhash}, {"_id": False})
     try:
 
-        #payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        #status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+        # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # status = (user_info.username == payload["id"])  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
 
         return render_template('user.html', user_info=user_info)
 
@@ -65,8 +68,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         try:
             token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
@@ -79,6 +82,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -88,10 +92,10 @@ def sign_up():
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
     doc = {
-        "username": username_receive,                               # 아이디
+        "username": username_receive,  # 아이디
         "userhash": username_hash,
-        "password": password_hash,                                   # 비밀번호
-        "nickname": nickname_receive,                                # 이름(닉네임)
+        "password": password_hash,  # 비밀번호
+        "nickname": nickname_receive,  # 이름(닉네임)
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -103,11 +107,13 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+
 @app.route('/sign_up/check_dupnick', methods=['POST'])
 def check_dupnick():
     nickname_receive = request.form['nickname_give']
     exists = bool(db.users.find_one({"nickname": nickname_receive}))
     return jsonify({'result': 'success', 'exists': exists})
+
 
 @app.route("/main/<userhash>", methods=['GET'])
 def main(userhash):
@@ -134,14 +140,18 @@ def main(userhash):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+
 @app.route("/golf", methods=["POST"])
 def score_post():
-    if request.form['page_give']:
-        userhash_receive = request.form['userhash_give']
-        score_list = list(db.golf_scores.find({"userhash":{ '$eq':userhash_receive }}, {'_id': False}))
-        return jsonify({'golf_scores': score_list, 'msg': '등록 완료!'})
-    else :
-        userhash_receive = request.form['userhash_give']
+    userhash_receive = request.form["userhash_give"]
+
+    if request.form['page_give'] is not None:
+        try:
+            score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
+            return jsonify({'golf_scores': score_list, 'msg': '등록 완료!'})
+        except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+            return jsonify({"result": "fail", 'msg': '불러오기 실패'})
+    else:
         nickname_receive = request.form['nickname_give']
         date_receive = request.form['date_give']
         field_receive = request.form['field_give']
@@ -161,10 +171,21 @@ def score_post():
 
         return jsonify({'msg': '등록 완료!'})
 
+
 @app.route("/golf", methods=["GET"])
 def score_get():
     score_list = list(db.golf_scores.find({}, {'_id': False}))
     return jsonify({'golf_scores': score_list})
+
+
+@app.route("/mygolf", methods=["POST"])
+def myscore_post():
+    userhash_receive = request.form["userhash_give"]
+    try:
+        score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
+        return jsonify({'result':'success', 'golf_scores': score_list, 'msg': '등록 완료!'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", 'msg': '불러오기 실패'})
 
 
 @app.route('/update_profile', methods=['POST'])
@@ -178,12 +199,10 @@ def update_profile():
         password_receive = request.form["password_give"]
         password_update = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
 
-
         if user_info['password'] != password_receive:
             password_register = password_update
         else:
             password_register = user_info['password']
-
 
         nickname_receive = request.form["nickname_give"]
 
@@ -191,8 +210,8 @@ def update_profile():
         tbox_receive = request.form["tbox_give"]
         about_receive = request.form["about_give"]
         new_doc = {
-            "password":password_register,
-            "nickname":nickname_receive,
+            "password": password_register,
+            "nickname": nickname_receive,
             "prifile_nickname": nickname_receive,
 
             "profile_area": area_receive,
@@ -200,16 +219,15 @@ def update_profile():
             "profile_info": about_receive
         }
 
-        db.users.update_one({'userhash': userhash_receive}, {'$set':new_doc})
+        db.users.update_one({'userhash': userhash_receive}, {'$set': new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+
 @app.route('/mypage_in', methods=['GET'])
 def mypage_in():
     return jsonify({"result": "success"})
-
-
 
 
 if __name__ == '__main__':
