@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{#    favicon#}
+    {# favicon#}
     <link rel="icon" href="/static/favicon.png" type="image/gif" sizes="16x16">
 
     <!-- Bulma CSS -->
@@ -36,10 +36,18 @@
             padding-top: 3.25rem;
         }
 
-        .section {
-            padding: 1rem 1.5rem;
-            max-width: 750px;
-            margin: auto;
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        .scorelist {
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
         }
 
         .is-sparta {
@@ -81,6 +89,50 @@
 
 
     <script>
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            let page = "profile_page"
+            let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
+            console.log(userhash)
+
+            $('#score-box').empty()
+            $.ajax({
+                type: 'POST',
+                url: '/golf',
+                data: {
+                    "page_give" : page,
+                    "userhash_give" : userhash
+                },
+                success: function (response) {
+
+                    let rows = response['golf_scores']
+                    for (let i = 0; i < rows.length; i++) {
+                        let nickname = rows[i]['nickname']
+                        let date = rows[i]['date']
+                        let field = rows[i]['field']
+                        let score = rows[i]['score']
+                        let grade = rows[i]['grade']
+                        console.log(nickname, date, field, score, grade)
+
+
+                        let temp_html = `<tr>
+                                            <td>${nickname}</td>
+                                            <td>${date}</td>
+                                            <td>${field}</td>
+                                            <td>${score}타</td>
+                                            <td>${grade}</td>
+                                        </tr>
+                        `
+
+                        $('#score-box').append(temp_html)
+                    }
+                }
+            })
+        }
+
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
@@ -386,6 +438,24 @@
 </section>
 
 <!-- 프로필 페이지 내 하단 -->
+<section>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">닉네임</th>
+            <th scope="col">날짜</th>
+            <th scope="col">장소</th>
+            <th scope="col">기록</th>
+            <th scope="col">등급</th>
+
+
+        </tr>
+        </thead>
+        <tbody id="score-box">
+        </tbody>
+    </table>
+</section>
+
 
 </body>
 </html>
