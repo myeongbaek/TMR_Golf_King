@@ -144,32 +144,24 @@ def main(userhash):
 @app.route("/golf", methods=["POST"])
 def score_post():
     userhash_receive = request.form["userhash_give"]
+    nickname_receive = request.form['nickname_give']
+    date_receive = request.form['date_give']
+    field_receive = request.form['field_give']
+    score_receive = request.form['score_give']
+    grade_receive = request.form['grade_give']
 
-    if request.form['page_give'] is not None:
-        try:
-            score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
-            return jsonify({'golf_scores': score_list, 'msg': '등록 완료!'})
-        except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-            return jsonify({"result": "fail", 'msg': '불러오기 실패'})
-    else:
-        nickname_receive = request.form['nickname_give']
-        date_receive = request.form['date_give']
-        field_receive = request.form['field_give']
-        score_receive = request.form['score_give']
-        grade_receive = request.form['grade_give']
+    doc = {
+        'userhash': userhash_receive,
+        'nickname': nickname_receive,
+        'date': date_receive,
+        'field': field_receive,
+        'score': score_receive,
+        'grade': grade_receive
+    }
 
-        doc = {
-            'userhash': userhash_receive,
-            'nickname': nickname_receive,
-            'date': date_receive,
-            'field': field_receive,
-            'score': score_receive,
-            'grade': grade_receive
-        }
+    db.golf_scores.insert_one(doc)
 
-        db.golf_scores.insert_one(doc)
-
-        return jsonify({'msg': '등록 완료!'})
+    return jsonify({'msg': '등록 완료!'})
 
 
 @app.route("/golf", methods=["GET"])
@@ -183,7 +175,7 @@ def myscore_post():
     userhash_receive = request.form["userhash_give"]
     try:
         score_list = list(db.golf_scores.find({"userhash": {'$eq': userhash_receive}}, {'_id': False}))
-        return jsonify({'result':'success', 'golf_scores': score_list, 'msg': '등록 완료!'})
+        return jsonify({'result': 'success', 'golf_scores': score_list, 'msg': '등록 완료!'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "fail", 'msg': '불러오기 실패'})
 
