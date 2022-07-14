@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {# favicon#}
+<!--    {# favicon#}-->
     <link rel="icon" href="/static/favicon.png" type="image/gif" sizes="16x16">
 
     <!-- Bulma CSS -->
@@ -39,23 +39,26 @@
             padding-top: 3.25rem;
         }
 
-        * {
-            font-family: 'Gowun Dodum', sans-serif;
-        }
-
         .scorelist {
             width: 95%;
             max-width: 500px;
-            margin: 20px auto 0px auto;
+            margin: 20px auto 0 auto;
             padding: 20px;
-            box-shadow: 0px 0px 3px 0px gray;
+            box-shadow: 0 0 3px 0 gray;
 
-            display: none;
+            display: none
         }
+
+        .table {
+            width: 95%;
+            margin: auto;
+            text-align: center;
+        }
+
 
         .is-sparta {
 
-            color: #ff0000 !important;
+            color: #0da90d !important;
         }
 
         .button.is-sparta {
@@ -88,6 +91,15 @@
             height: 100%;
         }
 
+        .title{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+            font-size: 18px;
+            margin: 10px
+        }
+
     </style>
 
 
@@ -111,16 +123,15 @@
                     if (response['result'] == "success") {
                         let rows = response['golf_scores']
                         for (let i = 0; i < rows.length; i++) {
-                            let nickname = rows[i]['nickname']
+                            // let nickname = rows[i]['nickname']
                             let date = rows[i]['date']
                             let field = rows[i]['field']
                             let score = rows[i]['score']
                             let grade = rows[i]['grade']
-                            console.log(nickname, date, field, score, grade)
+                            console.log(date, field, score, grade)
 
 
                             let temp_html = `<tr>
-                                            <td>${nickname}</td>
                                             <td>${date}</td>
                                             <td>${field}</td>
                                             <td>${score}타</td>
@@ -346,7 +357,7 @@
                                 <label class="label" for="input-password">비밀번호 재설정</label>
 
                                 <div class="control has-icons-left">
-                                    <input id="input-password" class="input" type="password" placeholder="비밀번호" value="{{ user_info.password }}">
+                                    <input id="input-password" class="input" type="password" placeholder="비밀번호">
                                     <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                                 </div>
                                 <p id="help-password" class="help is-hidden">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요.
@@ -441,10 +452,11 @@
 
 <!-- 프로필 페이지 내 하단 -->
 <section>
+    <text class="title">나의 기록</text>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">닉네임</th>
+<!--            <th scope="col">닉네임</th>-->
             <th scope="col">날짜</th>
             <th scope="col">장소</th>
             <th scope="col">기록</th>
