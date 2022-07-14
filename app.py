@@ -184,7 +184,6 @@ def update_profile():
 
         area_receive = request.form["area_give"]
         tbox_receive = request.form["tbox_give"]
-        address_receive = request.form["address_give"]
         about_receive = request.form["about_give"]
         new_doc = {
             "password":password_register,
@@ -192,7 +191,6 @@ def update_profile():
             "prifile_nickname": nickname_receive,
 
             "profile_area": area_receive,
-            "profile_address": address_receive,
             "profile_tbox": tbox_receive,
             "profile_info": about_receive
         }

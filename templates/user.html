@@ -93,7 +93,6 @@
             let password2 = $('#input-password2').val()
             let area = $('#input-area').val()
             let tbox = $('#input-tbox').val()
-            let address = $('#input-address').val()
             let about = $("#input-about").val()
             let form_data = new FormData()
             let userhash = JSON.parse('{{ user_info.userhash | tojson }}');
@@ -127,9 +126,8 @@
             form_data.append("password_give", password)
             form_data.append("area_give", area)
             form_data.append("tbox_give", tbox)
-            form_data.append("address_give", address)
             form_data.append("about_give", about)
-            console.log(nickname, password, area, tbox, address, about, form_data)
+            console.log(nickname, password, area, tbox, about, form_data)
 
             $.ajax({
                 type: "POST",
@@ -334,17 +332,6 @@
                                 </p>
                             </div>
 
-
-                            <!--  주소 -->
-                            <div class="field">
-                                <label class="label" for="input-address">주소</label>
-
-                                <p class="control">
-
-                                    <input id="input-address" class="input"
-                                           placeholder="myaddress" value="{{ user_info.profile_address }}">
-                                </p>
-                            </div>
 
                             <!-- 티박스 -->
                             <div class="field">
